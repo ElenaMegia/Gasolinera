@@ -1,9 +1,5 @@
 package com.example.Gasolinera.utilidades;
 
-
-
-import vistas.Clase10Control;
-import vistas.Vista10Control;
 public class Log {
 
     /**
@@ -14,7 +10,7 @@ public class Log {
      * @throws InterruptedException Error y su descripción
      */
     public synchronized void escribirLog(String log) throws InterruptedException{
-        Clase10Control.setjTextArea_Info(log);
+
     }
 
 
