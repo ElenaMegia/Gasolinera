@@ -14,8 +14,6 @@ public class Coches extends Thread{
     private int id;
 
     // Variables para la cola para pagar "tenedor"
-    private ColaDePago colaDePago;
-
     private Barra_Gasolinera surtidor;
 
     private Log log; // Para escribir en el Log
@@ -24,9 +22,8 @@ public class Coches extends Thread{
     // Variable pública y estática para que se pueda detener el método run() de esta clase:
     public static boolean finalizado = false;
 
-    public Coches(int id, ColaDePago colaDePago, Barra_Gasolinera surtidor, Log log){
+    public Coches(int id, Barra_Gasolinera surtidor, Log log){
         this.id = id;
-        this.colaDePago=colaDePago;
         this.surtidor = surtidor;
         this.log = log; // Puede ser null y por consiguiente no escribir el log
     }
@@ -40,7 +37,7 @@ public class Coches extends Thread{
                 // Obtener el cochce para que entre:
                 surtidor.entradaASurtidor(id, log);
                 // Obtener entrada en la cola de pago:
-                if (!colaDePago.entrarColaPago(id, log)){
+                if (!ColaDePago.entrarColaPago(id, log)){
                     // -----------------------------------------------------------------------------------------------------------------
                     // Si no se consigue surtidor: el coche no podra entrar a la gasolinera, tendra que volver a casilla de salida y volver a pasar la entrada:
                     System.out.println("El coche " + (id+1) + " tendrá que esperar a que algun surtidor este libre " + (id+1) + " tendrá que esperar a que los coches de los surtidores terminen de repostar.");
@@ -74,14 +71,15 @@ public class Coches extends Thread{
                 } // Fin de Simular el tiempo que tarda el coche en repostar
                 // Fin de Ahora el Coche paga ===================================================================================
                 System.out.println("El cliente del coche " + (id+1) + " va a pagar.");
-                colaDePago.entrarColaPago(id,log);
+                ColaDePago.entrarColaPago(id,log);
+
                 try {
                     sleep(3000);
                 } catch (InterruptedException ex) {
                     System.out.println("Error. Descripción: " + ex.toString());
                 }
                 // Sale de la cola:
-                colaDePago.salirDelaCola(id, log);
+                ColaDePago.salirDelaCola(id, log);
                 // Suelta el vehiculo:
                 surtidor.salirSurtidor(id, log);
                 // Ahora el Coche espera *********************************************************************************************
